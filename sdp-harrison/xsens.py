@@ -442,7 +442,7 @@ if __name__ == '__main__':
                 
                 # message = socket.recv()
                 client.send_data_stream(data=s)
-                client.listen_to_server()
+                # client.listen_to_server()
                 #print("%s\r" % s, end="", flush=True)
                 # print(f"{s}\r", end="", flush=True)
                 #print("%s\r" % s2, end="", flush=True)

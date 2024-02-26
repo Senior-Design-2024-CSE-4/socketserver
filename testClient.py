@@ -11,10 +11,13 @@ class Client:
         self.send = False
 
     def connect(self):
-        self.name = input("What should the server call this device? ")
+        # put the name of the device in quotes
+        self.name = ""
+        # set mode in the device
+        choice = ""
         self.client.connect((self.host, self.port))
         print(f"Connected to the server {self.host}:{self.port}")
-        choice = self.handle_mode()
+
         self.client.send(f"{choice}:{self.name}".encode())
 
         while self.listen or self.client:
@@ -22,13 +25,10 @@ class Client:
 
             if self.listen:
                 Thread(target=self.listen_to_server).start()
-            if self.send:       
-                clientList = self.client.recv(1024).decode()
-                print(f"Available Clients {clientList}")
-                destination = input("From the available clients which client will you like to send your data to? ")
+            if self.send:     
+                # put the name of the device you want to send data to  
+                destination = ""
                 self.client.send(destination.encode())
-                pause = input("ready to send? ")
-                self.send_data_stream()
 
     def listen_to_server(self):
         while True:

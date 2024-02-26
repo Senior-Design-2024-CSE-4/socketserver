@@ -147,10 +147,10 @@ def main():
                 lock.acquire()
                 
                 BeltHeading_ThreadShared = client.listen_to_server()
-                client.send_data_stream(b'1')
+                # client.send_data_stream(b'1')
                 # BeltHeading_ThreadShared = heading
                 lock.release()
-                client.send_data_stream(b'1')
+                # client.send_data_stream(b'1')
         def on_belt_battery_notified(self, charge_level, extra):
             if bBatteryInformation == 1:
                 print("\rBelt battery {}%            ".format(round(charge_level, 2)), end="")
@@ -236,7 +236,7 @@ def main():
             #print("Period of Process (s) = ",t_period_ns / 1000000000)
             #print("Counter (s) = ",counter)
             # print(client.listen_to_server())
-            client.send_data_stream(b'1')
+            # client.send_data_stream(b'1')
             if bOrientationNotificationTest == 1:
                 #print("\rBelt heading {}°            ".format(BeltHeading_ThreadShared), end="")
                 lock.acquire()

@@ -36,7 +36,7 @@ class Client:
         #     if not data:
         #         break
         #     print(f"Received from (Client): {data}")
-        return self.client.recv(8).decode()
+        return self.client.recv(10).decode()
 
     def handle_mode(self):
         choice = input("Will this device s for send, l for listen, or b for both? ")
