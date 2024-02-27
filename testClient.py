@@ -6,23 +6,28 @@ class Client:
     def __init__(self, host, port):
         self.host = host
         self.port = port
-        self.client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.listen = False
         self.send = False
 
-    def connect(self, name='', choice=''):
-        self.client.connect((self.host, self.port))
-        self.client.connect((self.host, self.port))
+    def connect(self, name='', choice='', destination=''):
+        try:
+            self.client.connect((self.host, self.port))
+        except Exception as e:
+            raise(e)
         # put the name of the device in quotes
-        self.name = 'name'
+        self.name = name
         # set mode in the device
         # s = send, l = listen, b = both
-        mode = 'l'
+        mode = choice
         
         print(f"Connected to the server {self.host}:{self.port}")
 
         self.client.send(f"{mode}:{self.name}".encode())
-        print(1)
+        self.client.recv(1024)
+
+        self.handle_mode(mode)
+        
         while self.listen or self.client:
 
 
@@ -31,18 +36,22 @@ class Client:
                 self.listen_to_server()
             if self.send:     
                 # put the name of the device you want to send data to  
-                destination = ""
+                destination = destination
                 self.client.send(destination.encode())
+                self.client.recv(1024)
+                print('received confirmation')
+                print('moving onto sending')
+                self.send_data_stream()
 
     def listen_to_server(self):
         while True:
+            print('in listen')
             data = self.client.recv(1024).decode()
             if not data:
                 break
             print(f"Received from (Client): {data}")
 
-    def handle_mode(self):
-        choice = input("Will this device s for send, l for listen, or b for both? ")
+    def handle_mode(self, choice):
         if choice == 's' or choice == 'b':
             self.send = True
         elif choice == 'l' or choice == 'b':
@@ -51,6 +60,7 @@ class Client:
         return choice
     
     def send_data_stream(self):
+        print('in sending')
         for i in range(1000):
             data = f"test packet {i}"
             self.client.sendall(data.encode())

@@ -16,24 +16,24 @@ class Server:
 
         try:
             while True:
-                print(1)
                 client, address = self.server.accept()
-                print(2)
                 
                 print(f"Connected with {address}")
 
                 message = client.recv(1024).decode()
+                client.send('confirmation'.encode())
                 role, name = message.split(':', 1)
 
                 self.clients[name] = (role, client)
 
+                print(role, name)
+
                 if role == "l":
                     continue
-
-                client.send((str(self.clients.keys()).encode()))
                 
                 choice = client.recv(1024).decode()
-                print(self.clients, choice)
+                client.send('confirmation'.encode())
+                
                 destination = self.clients[choice][1]
 
                 Thread(target=self.handle_client, args=(client,role,destination,)).start()
@@ -58,13 +58,12 @@ class Server:
         return None
     
     def handle_client(self, client, role, destination):
-
         while True:
             streamData = client.recv(1024)
             destination.sendall(streamData)
             if not streamData:
                 break
-            #print(f"Received Data from: {client}, the data: {streamData}")
+            print(f"Received Data from: {client}, the data: {streamData}")
 
     def listen_client(self, client):
         while True:
