@@ -10,21 +10,25 @@ class Client:
         self.listen = False
         self.send = False
 
-    def connect(self):
-        # put the name of the device in quotes
-        self.name = ""
-        # set mode in the device
-        choice = ""
+    def connect(self, name='', choice=''):
         self.client.connect((self.host, self.port))
+        self.client.connect((self.host, self.port))
+        # put the name of the device in quotes
+        self.name = 'name'
+        # set mode in the device
+        # s = send, l = listen, b = both
+        mode = 'l'
+        
         print(f"Connected to the server {self.host}:{self.port}")
 
-        self.client.send(f"{choice}:{self.name}".encode())
-
+        self.client.send(f"{mode}:{self.name}".encode())
+        print(1)
         while self.listen or self.client:
 
 
             if self.listen:
-                Thread(target=self.listen_to_server).start()
+                # Thread(target=self.listen_to_server).start()
+                self.listen_to_server()
             if self.send:     
                 # put the name of the device you want to send data to  
                 destination = ""

@@ -16,7 +16,9 @@ class Server:
 
         try:
             while True:
+                print(1)
                 client, address = self.server.accept()
+                print(2)
                 
                 print(f"Connected with {address}")
 
