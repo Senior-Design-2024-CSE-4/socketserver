@@ -27,8 +27,8 @@ namespace Client
                 tcpSocket = new TcpClient(host, port);
                 Console.WriteLine("TCP Connection successful.");
 
-                udpSocket = new UdpClient(host, port);
-                Console.WriteLine("UDP Connection successful.");
+                // udpSocket = new UdpClient(host, port);
+                // Console.WriteLine("UDP Connection successful.");
             }
             catch (Exception e)
             {
