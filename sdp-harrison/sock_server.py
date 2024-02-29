@@ -87,14 +87,14 @@ class Server:
         
         while True:
             streamData = client.recv(128).decode()
-            # client.send(b'1')
-            if len(streamData) < 10:
-                leng = len(streamData)
-                zeros = 10-leng
-                for i in range(zeros):
-                    streamData+='0'
+            client.send(b'1')
+            # if len(streamData) < 10:
+            #     leng = len(streamData)
+            #     zeros = 10-leng
+            #     for i in range(zeros):
+            #         streamData+='0'
             destination.send(streamData.encode())
-            # destination.recv(128).decode()
+            destination.recv(128).decode()
 
     def listen_client(self, client):
         # start = time.time()

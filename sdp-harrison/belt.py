@@ -145,7 +145,6 @@ def main():
                 global BeltHeading_ThreadShared
                 global lock
                 lock.acquire()
-                
                 BeltHeading_ThreadShared = client.listen_to_server()
                 # client.send_data_stream(b'1')
                 # BeltHeading_ThreadShared = heading

@@ -36,7 +36,9 @@ class Client:
         #     if not data:
         #         break
         #     print(f"Received from (Client): {data}")
-        return self.client.recv(10).decode()
+        data = self.client.recv(10).decode()
+        self.client.send('confirmation'.encode())
+        return data
 
     def handle_mode(self):
         choice = input("Will this device s for send, l for listen, or b for both? ")
@@ -54,8 +56,12 @@ class Client:
         #     time.sleep(0.0005)
 
         # self.client.close()
-
-        self.client.send(data.encode())
+        print(data)
+        if data == '':
+            self.client.send('1'.encode())
+        else:
+            self.client.send(data.encode())
+        self.client.recv(1024)
 
 
 if __name__ == "__main__":
