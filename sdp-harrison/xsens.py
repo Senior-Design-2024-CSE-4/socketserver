@@ -301,7 +301,7 @@ if __name__ == '__main__':
         ######################################################
 
         client = Client('127.0.0.1', 12345)
-        client.connect()
+        client.connect('imu', 's', 'belt')
 
 ######## ZMQ
 
@@ -441,7 +441,9 @@ if __name__ == '__main__':
                 # socket.send(f"{s}".encode())
                 
                 # message = socket.recv()
+                print(s)
                 client.send_data_stream(data=s)
+                # client.data=s
                 # client.listen_to_server()
                 #print("%s\r" % s, end="", flush=True)
                 # print(f"{s}\r", end="", flush=True)

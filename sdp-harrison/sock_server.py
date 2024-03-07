@@ -20,30 +20,22 @@ class Server:
                 
                 print(f"Connected with {address}")
 
-                destination, dest_address = self.server.accept()
+                message = client.recv(1024).decode()
+                client.send('confirmation'.encode())
+                role, name = message.split(':', 1)
 
-                print(f"Connected with {dest_address}")
+                self.clients[name] = (role, client)
 
-                # message = client.recv(1024).decode()
-                # role, name = message.split(':', 1)
+                print(role, name)
 
-                # self.clients[name] = (role, client)
-
-                # if role == "l":
-                #     continue
-
-                # client.send((str(self.clients.keys()).encode()))
+                if role == "l":
+                    continue
+                choice = client.recv(1024).decode()
+                client.send('confirmation'.encode())
                 
-                # choice = client.recv(1024).decode()
-                # print(self.clients, choice)
-                # destination = self.clients[choice][1]
+                destination = self.clients[choice][1]
 
-                # Thread(target=self.handle_client, args=(client,role,destination,)).start()
-
-                # self.listen_client(client)
-                # self.send_client(client)
-
-                self.handle_client(client=client, destination=destination)
+                Thread(target=self.handle_client, args=(client,destination,)).start()
 
         except KeyboardInterrupt:
             print("Shutting down server")
@@ -58,41 +50,11 @@ class Server:
     def shutdown(self):
         self.server.close()
 
-    def handle_role(self, client, role, name):
-        #self.clients[name] = (role, client)
-        return None
-    
-    def handle_destination(self, client):
-        return None
-    
-    # def handle_client(self, client, role, destination):
-
-    #     while True:
-    #         streamData = client.recv(1024)
-    #         destination.sendall(streamData)
-    #         if not streamData:
-    #             break
-    #         #print(f"Received Data from: {client}, the data: {streamData}")
-
     def handle_client(self, client, destination):
-        # while True:
-        #     streamData=client.recv(1024)
-            
-        #     if streamData is None:
-        #         break
-        #     print(streamData)
-        #     destination.send(streamData)
-        #     client.send('1'.encode())
-        #     destination.recv(1024)
-        
         while True:
             streamData = client.recv(128).decode()
             client.send(b'1')
-            # if len(streamData) < 10:
-            #     leng = len(streamData)
-            #     zeros = 10-leng
-            #     for i in range(zeros):
-            #         streamData+='0'
+            print(streamData)
             destination.send(streamData.encode())
             destination.recv(128).decode()
 

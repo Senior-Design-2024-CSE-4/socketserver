@@ -135,7 +135,8 @@ def main():
     from pybelt.belt_controller import BeltControllerDelegate
     from test_client import Client
     client = Client('127.0.0.1', 12345)
-    client.connect()
+    client.connect('belt', 'l')
+    time.sleep(5)
     # set up belt controller so we are able to to get information from that belt thread
     button_pressed_event = Event()
     class Delegate(BeltControllerDelegate):
@@ -146,8 +147,7 @@ def main():
                 global lock
                 lock.acquire()
                 BeltHeading_ThreadShared = client.listen_to_server()
-                # client.send_data_stream(b'1')
-                # BeltHeading_ThreadShared = heading
+                # BeltHeading_ThreadShared = client.data
                 lock.release()
                 # client.send_data_stream(b'1')
         def on_belt_battery_notified(self, charge_level, extra):

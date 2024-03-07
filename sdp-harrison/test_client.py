@@ -9,39 +9,44 @@ class Client:
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.listen = False
         self.send = False
+        self.data=''
+        self.send_data = ''
 
-    def connect(self):
+    def connect(self, name='', choice='', destination=''):
         # self.name = input("What should the server call this device? ")
-        self.client.connect((self.host, self.port))
+        try:
+            self.client.connect((self.host, self.port))
+        except Exception as e:
+            raise(e)
+        # put the name of the device in quotes
+        self.name = name
+        # set mode in the device
+        # s = send, l = listen, b = both
+        mode = choice
+        
         print(f"Connected to the server {self.host}:{self.port}")
-        # choice = self.handle_mode()
-        # self.client.send(f"{choice}:{self.name}".encode())
 
-        # while self.listen or self.client:
+        self.handle_mode(mode)
+
+        self.client.send(f"{mode}:{self.name}".encode())
+        self.client.recv(1024)
 
 
-        #     if self.listen:
-        #         Thread(target=self.listen_to_server).start()
-        #     if self.send:       
-        #         clientList = self.client.recv(1024).decode()
-        #         print(f"Available Clients {clientList}")
-        #         destination = input("From the available clients which client will you like to send your data to? ")
-        #         self.client.send(destination.encode())
-        #         pause = input("ready to send? ")
-        #         self.send_data_stream()
+        if self.listen:
+            print('ready to listen')
+            
+        if self.send:     
+            # put the name of the device you want to send data to  
+            self.client.send(destination.encode())
+            self.client.recv(1024)
+            print('received confirmation')
 
     def listen_to_server(self):
-        # while True:
-        #     data = self.client.recv(1024).decode()
-        #     if not data:
-        #         break
-        #     print(f"Received from (Client): {data}")
         data = self.client.recv(10).decode()
         self.client.send('confirmation'.encode())
         return data
 
-    def handle_mode(self):
-        choice = input("Will this device s for send, l for listen, or b for both? ")
+    def handle_mode(self, choice):
         if choice == 's' or choice == 'b':
             self.send = True
         elif choice == 'l' or choice == 'b':
@@ -49,14 +54,8 @@ class Client:
         
         return choice
     
-    def send_data_stream(self, data):
-        # for i in range(1000):
-        #     data = f"test packet {i}"
-        #     self.client.sendall(data.encode())
-        #     time.sleep(0.0005)
-
-        # self.client.close()
-        print(data)
+    def send_data_stream(self, data=None):
+        data = data
         if data == '':
             self.client.send('1'.encode())
         else:
