@@ -41,10 +41,10 @@ class Client:
             self.client.recv(1024)
             print('received confirmation')
 
-    def listen_to_server(self):
-        data = self.client.recv(10).decode()
+    def listen_to_server(self, origin):
+        data = self.client.recv(1024).decode()
         self.client.send('confirmation'.encode())
-        return data
+        
 
     def handle_mode(self, choice):
         if choice == 's' or choice == 'b':
@@ -55,7 +55,6 @@ class Client:
         return choice
     
     def send_data_stream(self, data=None):
-        data = data
         if data == '':
             self.client.send('1'.encode())
         else:

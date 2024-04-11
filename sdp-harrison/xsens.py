@@ -323,7 +323,7 @@ if __name__ == '__main__':
 
         print("Main loop. Recording data for 10 seconds.")
         count = 1
-        while xda.XsTimeStamp_nowMs() - startTime <= 60000:
+        while xda.XsTimeStamp_nowMs() - startTime <= 600000:
             if callback.packetAvailable():
                 # Retrieve a packet
                 packet = callback.getNextPacket()
@@ -340,7 +340,7 @@ if __name__ == '__main__':
                     bPrint_orientationEuler = True
                     if bPrint_orientationEuler == True:
                         # s += " | Roll: %5.2f" % euler.x() + ", Pitch: %5.2f" % euler.y() + ", Yaw: %5.2f " % euler.z()
-                        s += "%5.2f" % euler.z()
+                        s += "%5.2f" % (euler.z()+180)
                 
                 # if packet.containsCalibratedGyroscopeData():  # WARNING GETTING GYRO DATA ONLY WORKS WHEN HAVE RATE OF TURN PACKET 
                 #     gyr = packet.calibratedGyroscopeData() # gyr[0] gyr[1] gyr[2] (X Y Z)
