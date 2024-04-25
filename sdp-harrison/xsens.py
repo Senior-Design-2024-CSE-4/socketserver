@@ -301,7 +301,7 @@ if __name__ == '__main__':
         ######################################################
 
         client = Client('127.0.0.1', 12345)
-        client.connect('imu', 's', 'belt')
+        client.connect('imu', 's', 'xsens')
 
 ######## ZMQ
 
@@ -340,8 +340,8 @@ if __name__ == '__main__':
                     bPrint_orientationEuler = True
                     if bPrint_orientationEuler == True:
                         # s += " | Roll: %5.2f" % euler.x() + ", Pitch: %5.2f" % euler.y() + ", Yaw: %5.2f " % euler.z()
-                        s += "%5.2f" % (euler.z()+180)
-                
+                        # s += "%5.2f" % (euler.z()+180)
+                        s += '%3f' % (euler.z()-90)
                 # if packet.containsCalibratedGyroscopeData():  # WARNING GETTING GYRO DATA ONLY WORKS WHEN HAVE RATE OF TURN PACKET 
                 #     gyr = packet.calibratedGyroscopeData() # gyr[0] gyr[1] gyr[2] (X Y Z)
                 #     bPrint_Gyroscope = False

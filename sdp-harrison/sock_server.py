@@ -42,14 +42,6 @@ class Server:
             self.close_all_clients()
             self.shutdown()
 
-    def close_all_clients(self):
-        for name, (role, client) in self.clients.items():
-                client.close()
-                print(f"Closed {name}")
-
-    def shutdown(self):
-        self.server.close()
-
     def handle_client(self, client, destination):
         while True:
             streamData = client.recv(128).decode()
@@ -57,31 +49,6 @@ class Server:
             print(streamData)
             destination.send(streamData.encode())
             destination.recv(128).decode()
-
-    def listen_client(self, client):
-        # start = time.time()
-        # # count = 0
-        # while True:
-        streamData = client.recv(128).decode()
-        # if not streamData:
-        #     break
-        # print(f"Received Data from: {client}, the data: {streamData}")
-        # print(f"{streamData}\r", end="", flush=True)
-            # count += 1
-            # print(f"{round(count/(time.time()-start), 8)}, {count}, {time.time()-start}\r", end='', flush=True)
-        client.send(b'1')
-        return streamData
-
-
-    def send_client(self, client, data):
-        data = f"{1}"
-        client.send(data.encode())
-        client.recv(128).decode()
-
-    def send_to_client(self, client_id, message):
-        if client_id in self.clients:
-            client = self.clients[client_id]
-            client.send(message.encode())
 
 if __name__ == "__main__":
     server = Server('127.0.0.1', 12345)
